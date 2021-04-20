@@ -1,0 +1,12 @@
+{
+  "name": "jdonalds/328/diner",
+  "authors": [
+    {
+      "name": "Jake Donaldson",
+      "email": "jdonaldson8@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
