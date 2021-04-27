@@ -16,11 +16,13 @@ $f3->route('GET /', function(){
     $view = new Template();
     echo $view->render('views/home.html');
 });
-/*
+
 $f3->route('GET /breakfast', function(){
-    echo "<h2>What's for breakfast?</h2>";
+    //Display the breakfast page
+    $view = new Template();
+    echo $view->render('views/breakfast.html');
 });
-*/
+
 
 //run fat-free
 $f3->run();
