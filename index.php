@@ -23,6 +23,12 @@ $f3->route('GET /breakfast', function(){
     echo $view->render('views/breakfast.html');
 });
 
+$f3->route('GET /lunch', function(){
+    //Display the breakfast page
+    $view = new Template();
+    echo $view->render('views/lunch.html');
+});
+
 
 //run fat-free
 $f3->run();
