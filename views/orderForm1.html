@@ -1,0 +1,46 @@
+<include href="views/header.html"></include>
+<body>
+<div class="container">
+    <h1>The Diner:  Order Form Part 1</h1>
+
+    <form action="#" method="post" class="form-horizontal">
+
+        <!-- get food -->
+        <div class="form-group">
+            <label for="food" class="col-sm-2 control-label">What food would you like to order?</label>
+
+            <div class="col-sm-4">
+                <input class="form-control" type="text" name="food" id="food" >
+            </div>
+
+            <!-- display an error message if there is one -->
+            <check if="{{ isset(@errors['food']) }}">
+                <span class="err">{{ @errors['food'] }}</span>
+            </check>
+        </div>
+        <br>
+
+        <!-- get meal -->
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Select a meal</label>
+            <div class="col-sm-4">
+                <repeat group="{{ @meals }}" value="{{ @meal }}">
+                <label><input type="radio" name="meal"
+                              id="{{ @meal }}" value="{{ @meal }}"> {{ ucfirst(@meal) }}</input></label><br>
+                </repeat>
+
+                <!-- display an error message for meal if there is one -->
+                <check if="{{ isset(@errors['meal']) }}">
+                    <span class="err">{{ @errors['meal'] }}</span>
+                </check>
+            </div>
+        </div>
+
+        <div class="col-xs-3 ">
+            <input class="form-control btn btn-default"
+                   type="submit" value="Next">
+        </div>
+    </form>
+</div>
+</body>
+</html>
