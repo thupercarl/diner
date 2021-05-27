@@ -2,8 +2,11 @@
 <body>
 <div>
     <h1>Summary</h1>
-    <p>Thank you for ordering {{ @SESSION.food }} for {{ @SESSION.meal }}</p>
-    <p>Condiments: {{ @SESSION.conds }}</p>
+    <p>Order ID: {{ @orderId }}</p>
+    <p>Thank you for ordering {{ @SESSION.order->getFood() }} for {{ @SESSION.order->getMeal() }}</p>
+    <check if="{{ !empty(@SESSION.order->getCondiments()) }}">
+        <p>Condiments: {{ @SESSION.order->getCondiments() }}</p>
+    </check>
 
     <a href="order1">Place another order</a><br>
     <a href="{{ @BASE }}">Home Page</a>
