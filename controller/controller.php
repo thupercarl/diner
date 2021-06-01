@@ -16,14 +16,30 @@ class Controller
         echo $view->render('views/home.html');
     }
 
+    function admin()
+    {
+        //query db
+        $orders = $GLOBALS['dataLayer']->getOrders();
+
+        //add db result to hive
+        $this->_f3->set('orders', $orders);
+
+        //Display the admin page
+        $view = new Template();
+        echo $view->render('views/admin.html');
+    }
+
     function order1()
     {
         //Reinitialize session array
         $_SESSION = array();
 
         //Instantiate an Order object
+        //$order = new Order();
+        //$_SESSION['order'] = $order;
+
         $_SESSION['order'] = new Order();
-        //var_dump($_SESSION['$order']);
+        //var_dump($_SESSION['order']);
 
         //Initialize variables to store user input
         $userFood = "";
@@ -119,14 +135,17 @@ class Controller
     function summary()
     {
         //Save the order to the database
-        $orderId = $GLOBALS['dataLayer']->saveOrder();
-
-        //put in hive so we have access to it
+        //global $dataLayer;
+        //$dataLayer->saveOrder();
+        //--or--
+        $orderId = $GLOBALS['dataLayer']->saveOrder($_SESSION['order']);
         $this->_f3->set('orderId', $orderId);
 
         //Display the second order form
         $view = new Template();
         echo $view->render('views/summary.html');
-        session_destroy();
+
+        //This might be problematic
+        unset($_SESSION['order']);
     }
 }

@@ -2,56 +2,108 @@
 
 /* data-layer.php
  * Return data for the diner app
- *
  */
+
+//Require the config file
+require_once($_SERVER['DOCUMENT_ROOT'].'/../config.php');
+
 class DataLayer
 {
-    //Add a field for the database object
+    // Add a field for the database object
+    /**
+     * @var PDO The database connection object
+     */
     private $_dbh;
 
-    //Define a constructor
-    function __construct($dbh)
+    // Define a constructor
+
+    /**
+     * DataLayer constructor.
+     */
+    function __construct()
     {
-        $this->_dbh = $dbh;
+        //Connect to the database
+        try {
+            //Instantiate a PDO database object
+            $this->_dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+            //echo "Connected to database!";
+        }
+        catch(PDOException $e) {
+            //echo $e->getMessage();  //for debugging only
+            die ("Oh darn! We're having a bad day. Please call to place your order.");
+        }
     }
 
-    //Saves order to database
-    function saveOrder()
-    {
-        //1 Define Query
-        $sql = "INSERT INTO orders (food, meal, condiments)
-        VALUES (:food, :meal, :condiments)";
+    // Saves an order to the database
 
-        //2 Prepare the Statement
+    /**
+     * saveOrder accepts an Order object and inserts it into the database
+     * @param $order
+     * @return string
+     */
+    function saveOrder($order)
+    {
+        //1. Define the query
+        $sql = "INSERT INTO orders (food, meal, condiments)
+                VALUES (:food, :meal, :condiments)";
+
+        //2. Prepare the statement
         $statement = $this->_dbh->prepare($sql);
 
-        //3 Bind the parameters
-        $statement->bindParam(':food', $_SESSION['order']->getFood(), PDO::PARAM_STR);
-        $statement->bindParam(':meal', $_SESSION['order']->getMeal(), PDO::PARAM_STR);
-        $statement->bindParam(':condiments', $_SESSION['order']->getCondiments(), PDO::PARAM_STR);
+        //3. Bind the parameters
+        $statement->bindParam(':food', $order->getFood(), PDO::PARAM_STR);
+        $statement->bindParam(':meal', $order->getMeal(), PDO::PARAM_STR);
+        $statement->bindParam(':condiments', $order->getCondiments(), PDO::PARAM_STR);
 
-        //4 Execute the Query
+        //4. Execute the query
         $statement->execute();
 
-        //5 Process the results (get OrderID)
+        //5. Process the results (get OrderID)
         $id = $this->_dbh->lastInsertId();
         return $id;
+    }
 
+    /**
+     * getOrders returns all orders from the database
+     * @return array an array of data rows
+     */
+    function getOrders()
+    {
+        $sql = "SELECT order_id, food, meal, condiments, order_date FROM orders";
+        $statement = $this->_dbh->prepare($sql);
 
+        //no parameters to bind (no WHERE clause)
+
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);//grab result as associative array
+        return $result;
     }
 
     // Get the meals for the order form
+
+    /**
+     * getMeals returns an array of meal options
+     * @return string[]
+     */
     static function getMeals()
     {
         return array("breakfast", "brunch", "lunch", "dinner");
     }
 
-// Get the condiments for the order 2 form
+    // Get the condiments for the order 2 form
+
+    /**
+     * getCondiments returns an array of condiment options
+     * @return string[]
+     */
     static function getCondiments()
     {
-        return array("ketchup", "mustard", "mayo", "sriracha");
+        return array("ketchup", "mustard", "mayo", "sriracha", "maple syrup");
     }
 }
+
+
 /*
  * 1. Help each other
  * 2. Add a getCondiments() function to the Model

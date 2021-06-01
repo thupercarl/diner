@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+    <h1>Admin Page</h1>
+
+
+    <table id="tdlOrders">
+        <thead>
+            <tr>
+                <td>Order ID</td><td>Food</td><td>Meal</td><td>Condiments</td><td>Order Date</td>
+            </tr>
+        </thead>
+        <tbody>
+            <repeat group="{{ @orders }}" value="{{ $order }}">
+                <tr>
+                    <td>{{ @order['order_id'] }}</td>
+                    <td>{{ @order['food'] }}</td>
+                    <td>{{ @order['meal'] }}</td>
+                    <td>{{ @order['condiments'] }}</td>
+                    <td>{{ @order['order_date'] }}</td>
+                </tr>
+            </repeat>
+        </tbody>
+    </table>
+
+
+    <a href="{{ @BASE }}">Home Page</a>
+    <script src="//cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+</body>
+</html>
